@@ -7,17 +7,17 @@ pygame.init()
 WIN_WIDTH = 600
 WIN_HEIGHT = 800
 FLOOR = 730
-STAT_FONT = pygame.font.Font("fonts/FlappyBird.ttf", 50)
-END_FONT = pygame.font.Font("fonts/FlappyBird.ttf", 70)
+STAT_FONT = pygame.font.Font("font/FlappyBird.ttf", 50)
+END_FONT = pygame.font.Font("font/FlappyBird.ttf", 70)
 DRAW_LINES = False
 
 WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Flappy Bird AI")
 
-pipe_img = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","pipe.png")).convert_alpha())
-bg_img = pygame.transform.scale(pygame.image.load(os.path.join("imgs","bg.png")).convert_alpha(), (600, 900))
-bird_images = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bird" + str(x) + ".png"))) for x in range(1,4)]
-base_img = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","base.png")).convert_alpha())
+pipe_img = pygame.transform.scale2x(pygame.image.load(os.path.join("images","pipe.png")).convert_alpha())
+bg_img = pygame.transform.scale(pygame.image.load(os.path.join("images","bg.png")).convert_alpha(), (600, 900))
+bird_images = [pygame.transform.scale2x(pygame.image.load(os.path.join("images","bird" + str(x) + ".png"))) for x in range(1,4)]
+base_img = pygame.transform.scale2x(pygame.image.load(os.path.join("images","base.png")).convert_alpha())
 
 gen = 0
 
@@ -281,15 +281,15 @@ def draw_window(win, birds, pipes, base, score, gen, pipe_ind):
         bird.draw(win)
 
     # score
-    score_label = STAT_FONT.render("Score: " + str(score),1,(255,255,255))
+    score_label = STAT_FONT.render("Score: " + str(score),1,(255, 255, 255))
     win.blit(score_label, (WIN_WIDTH - score_label.get_width() - 15, 10))
 
     # generations
-    score_label = STAT_FONT.render("Gens: " + str(gen-1),1,(255,255,255))
+    score_label = STAT_FONT.render("Gens: " + str(gen-1),1,(255, 255, 255))
     win.blit(score_label, (10, 10))
 
     # alive
-    score_label = STAT_FONT.render("Alive: " + str(len(birds)),1,(255,255,255))
+    score_label = STAT_FONT.render("Alive: " + str(len(birds)),1,(255, 255 ,255))
     win.blit(score_label, (10, 50))
 
     pygame.display.update()
@@ -338,7 +338,7 @@ def eval_genomes(genomes, config):
         pipe_ind = 0
         if len(birds) > 0:
             if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():  # determine whether to use the first or second
-                pipe_ind = 1                                                                 # pipe on the screen for neural network input
+                pipe_ind = 1                                                                # pipe on the screen for neural network input
 
         for x, bird in enumerate(birds):  # give each bird a fitness of 0.1 for each frame it stays alive
             ge[x].fitness += 0.1
