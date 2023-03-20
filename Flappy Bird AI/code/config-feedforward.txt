@@ -6,17 +6,17 @@ pop_size              = 20
 reset_on_extinction   = False
 
 [DefaultGenome]
-# node activation options
+# Node Activation Options
 activation_default      = tanh
 activation_mutate_rate  = 0.0
 activation_options      = tanh
 
-# node aggregation options
+# Node Aggregation Options
 aggregation_default     = sum
 aggregation_mutate_rate = 0.0
 aggregation_options     = sum
 
-# node bias options
+# Node Bias Options
 bias_init_mean          = 0.0
 bias_init_stdev         = 1.0
 bias_max_value          = 30.0
@@ -25,31 +25,31 @@ bias_mutate_power       = 0.5
 bias_mutate_rate        = 0.7
 bias_replace_rate       = 0.1
 
-# genome compatibility options
+# Genome Compatibility Options
 compatibility_disjoint_coefficient = 1.0
 compatibility_weight_coefficient   = 0.5
 
-# connection add/remove rates
+# Connection Add / Remove Rates
 conn_add_prob           = 0.5
 conn_delete_prob        = 0.5
 
-# connection enable options
+# Connection Enable Options
 enabled_default         = True
 enabled_mutate_rate     = 0.01
 
 feed_forward            = True
 initial_connection      = full
 
-# node add/remove rates
+# Node Add / Remove Rates
 node_add_prob           = 0.2
 node_delete_prob        = 0.2
 
-# network parameters
+# Network Parameters
 num_hidden              = 0
 num_inputs              = 3
 num_outputs             = 1
 
-# node response options
+# Node Response Options
 response_init_mean      = 1.0
 response_init_stdev     = 0.0
 response_max_value      = 30.0
@@ -58,7 +58,7 @@ response_mutate_power   = 0.0
 response_mutate_rate    = 0.0
 response_replace_rate   = 0.0
 
-# connection weight options
+# Connection Weight Options
 weight_init_mean        = 0.0
 weight_init_stdev       = 1.0
 weight_max_value        = 30
