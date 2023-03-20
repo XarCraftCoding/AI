@@ -22,9 +22,7 @@ base_img = pygame.transform.scale2x(pygame.image.load(os.path.join("images","bas
 gen = 0
 
 class Bird:
-    """
-    Bird class representing the flappy bird
-    """
+    # Bird Class is Representing the Flappy Bird.
     MAX_ROTATION = 25
     IMGS = bird_images
     ROT_VEL = 20
@@ -39,7 +37,7 @@ class Bird:
         """
         self.x = x
         self.y = y
-        self.tilt = 0  # degrees to tilt
+        self.tilt = 0  # Degrees to tilt
         self.tick_count = 0
         self.vel = 0
         self.height = self.y
@@ -47,25 +45,22 @@ class Bird:
         self.img = self.IMGS[0]
 
     def jump(self):
-        """
-        make the bird jump
-        :return: None
-        """
+        # Make the Bird Jump
+        # return: None
         self.vel = -10.5
         self.tick_count = 0
         self.height = self.y
 
     def move(self):
-        """
-        make the bird move
-        :return: None
-        """
+        # Make the Bird Move
+        # return: None
+        
         self.tick_count += 1
 
-        # for downward acceleration
-        displacement = self.vel*(self.tick_count) + 0.5*(3)*(self.tick_count)**2  # calculate displacement
+        # For Downward Acceleration
+        displacement = self.vel*(self.tick_count) + 0.5*(3)*(self.tick_count)**2  # Calculate Displacement
 
-        # terminal velocity
+        # Terminal Velocity
         if displacement >= 16:
             displacement = (displacement/abs(displacement)) * 16
 
@@ -74,22 +69,21 @@ class Bird:
 
         self.y = self.y + displacement
 
-        if displacement < 0 or self.y < self.height + 50:  # tilt up
+        if displacement < 0 or self.y < self.height + 50:  # Tilt Up
             if self.tilt < self.MAX_ROTATION:
                 self.tilt = self.MAX_ROTATION
-        else:  # tilt down
+        else:  # Tilt Down
             if self.tilt > -90:
                 self.tilt -= self.ROT_VEL
 
     def draw(self, win):
-        """
-        draw the bird
-        :param win: pygame window or surface
-        :return: None
-        """
+        # Draw the Bird
+        # :param win: pygame window or surface
+        # return: None
+        
         self.img_count += 1
 
-        # For animation of bird, loop through three images
+        # For Animation of the Bird, Loop Through Three Images.
         if self.img_count <= self.ANIMATION_TIME:
             self.img = self.IMGS[0]
         elif self.img_count <= self.ANIMATION_TIME*2:
@@ -102,41 +96,39 @@ class Bird:
             self.img = self.IMGS[0]
             self.img_count = 0
 
-        # so when bird is nose diving it isn't flapping
+        # So When Bird is Nose Diving It Isn't Flapping.
         if self.tilt <= -80:
             self.img = self.IMGS[1]
             self.img_count = self.ANIMATION_TIME*2
 
 
-        # tilt the bird
+        # Tilt the Bird
         blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
 
     def get_mask(self):
-        """
-        gets the mask for the current image of the bird
-        :return: None
-        """
+        # Gets the Mask For the Current Image of the Bird
+        # return: None
+        
         return pygame.mask.from_surface(self.img)
 
 
 class Pipe():
-    """
-    represents a pipe object
-    """
+    # Represents a Pipe Object
+    
     GAP = 200
     VEL = 5
 
     def __init__(self, x):
-        """
-        initialize pipe object
-        :param x: int
-        :param y: int
-        :return" None
-        """
+        
+        # Initialize the Pipe Object
+        # param x: int
+        # param y: int
+        # return: None
+        
         self.x = x
         self.height = 0
 
-        # where the top and bottom of the pipe is
+        # Where the Top and Bottom of the Pipe Is
         self.top = 0
         self.bottom = 0
 
@@ -148,39 +140,35 @@ class Pipe():
         self.set_height()
 
     def set_height(self):
-        """
-        set the height of the pipe, from the top of the screen
-        :return: None
-        """
+        # Set the Height of the Pipe, From the Top of the Screen
+        # return: None
+        
         self.height = random.randrange(50, 450)
         self.top = self.height - self.PIPE_TOP.get_height()
         self.bottom = self.height + self.GAP
 
     def move(self):
-        """
-        move pipe based on vel
-        :return: None
-        """
+        # Move Pipe Based on Velocity
+        # return: None
+        
         self.x -= self.VEL
 
     def draw(self, win):
-        """
-        draw both the top and bottom of the pipe
-        :param win: pygame window/surface
-        :return: None
-        """
-        # draw top
+        # Draw the Both of the Top and the Bottom of the Pipe
+        # param win: pygame window/surface
+        # return: None
+        
+        # Draw the Top
         win.blit(self.PIPE_TOP, (self.x, self.top))
-        # draw bottom
+        # Draw the Bottom
         win.blit(self.PIPE_BOTTOM, (self.x, self.bottom))
 
 
     def collide(self, bird, win):
-        """
-        returns if a point is colliding with the pipe
-        :param bird: Bird object
-        :return: Bool
-        """
+        # Returns If a Point Is Colliding with the Pipe
+        # param bird: Bird object
+        # return: Bool
+        
         bird_mask = bird.get_mask()
         top_mask = pygame.mask.from_surface(self.PIPE_TOP)
         bottom_mask = pygame.mask.from_surface(self.PIPE_BOTTOM)
@@ -196,28 +184,25 @@ class Pipe():
         return False
 
 class Base:
-    """
-    Represnts the moving floor of the game
-    """
+    # Represnts the Moving Floor of the Game
+    
     VEL = 5
     WIDTH = base_img.get_width()
     IMG = base_img
 
     def __init__(self, y):
-        """
-        Initialize the object
-        :param y: int
-        :return: None
-        """
+        # Initialize the Object
+        # param y: int
+        # return: None
+        
         self.y = y
         self.x1 = 0
         self.x2 = self.WIDTH
 
     def move(self):
-        """
-        move floor so it looks like its scrolling
-        :return: None
-        """
+        # Move Floor so It Looks Like It's Scrolling
+        # return: None
+        
         self.x1 -= self.VEL
         self.x2 -= self.VEL
         if self.x1 + self.WIDTH < 0:
@@ -227,40 +212,37 @@ class Base:
             self.x2 = self.x1 + self.WIDTH
 
     def draw(self, win):
-        """
-        Draw the floor. This is two images that move together.
+        # Draw the Floor. These are the Two Images that Moves Together.
         :param win: the pygame surface/window
         :return: None
-        """
+        
         win.blit(self.IMG, (self.x1, self.y))
         win.blit(self.IMG, (self.x2, self.y))
 
 
 def blitRotateCenter(surf, image, topleft, angle):
-    """
-    Rotate a surface and blit it to the window
-    :param surf: the surface to blit to
-    :param image: the image surface to rotate
-    :param topLeft: the top left position of the image
-    :param angle: a float value for angle
-    :return: None
-    """
+    # Rotate a Surface and Blit It to the Window
+    # param surf: the surface to blit to
+    # param image: the image surface to rotate
+    # param topLeft: the top left position of the image
+    # param angle: a float value for angle
+    # return: None
+    
     rotated_image = pygame.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center = image.get_rect(topleft = topleft).center)
 
     surf.blit(rotated_image, new_rect.topleft)
 
 def draw_window(win, birds, pipes, base, score, gen, pipe_ind):
-    """
-    draws the windows for the main game loop
-    :param win: pygame window surface
-    :param bird: a Bird object
-    :param pipes: List of pipes
-    :param score: score of the game (int)
-    :param gen: current generation
-    :param pipe_ind: index of closest pipe
-    :return: None
-    """
+    # Draws the Windows For the Main Game Loop
+    # param win: pygame window surface
+    # param bird: a Bird object
+    # param pipes: List of pipes
+    # param score: score of the game (int)
+    # param gen: current generation
+    # param pipe_ind: index of closest pipe
+    # return: None
+    
     if gen == 0:
         gen = 1
     win.blit(bg_img, (0,0))
@@ -270,25 +252,25 @@ def draw_window(win, birds, pipes, base, score, gen, pipe_ind):
 
     base.draw(win)
     for bird in birds:
-        # draw lines from bird to pipe
+        # Draw the Lines From Bird to Pipe
         if DRAW_LINES:
             try:
                 pygame.draw.line(win, (255,0,0), (bird.x+bird.img.get_width()/2, bird.y + bird.img.get_height()/2), (pipes[pipe_ind].x + pipes[pipe_ind].PIPE_TOP.get_width()/2, pipes[pipe_ind].height), 5)
                 pygame.draw.line(win, (255,0,0), (bird.x+bird.img.get_width()/2, bird.y + bird.img.get_height()/2), (pipes[pipe_ind].x + pipes[pipe_ind].PIPE_BOTTOM.get_width()/2, pipes[pipe_ind].bottom), 5)
             except:
                 pass
-        # draw bird
+        # Draw Bird
         bird.draw(win)
 
-    # score
+    # Score
     score_label = STAT_FONT.render("Score: " + str(score),1,(255, 255, 255))
     win.blit(score_label, (WIN_WIDTH - score_label.get_width() - 15, 10))
 
-    # generations
+    # Generations
     score_label = STAT_FONT.render("Gens: " + str(gen-1),1,(255, 255, 255))
     win.blit(score_label, (10, 10))
 
-    # alive
+    # Alive
     score_label = STAT_FONT.render("Alive: " + str(len(birds)),1,(255, 255 ,255))
     win.blit(score_label, (10, 50))
 
@@ -296,23 +278,18 @@ def draw_window(win, birds, pipes, base, score, gen, pipe_ind):
 
 
 def eval_genomes(genomes, config):
-    """
-    runs the simulation of the current population of
-    birds and sets their fitness based on the distance they
-    reach in the game.
-    """
+    # Runs the Simulation of the Current Population of the Birds and Sets Their Fitness Based on the Distance They Reach In the Game.
+    
     global WIN, gen
     win = WIN
     gen += 1
 
-    # start by creating lists holding the genome itself, the
-    # neural network associated with the genome and the
-    # bird object that uses that network to play
+    # Start by Creating Lists Holding the Genome Itself, the Neural Network Associated with the Genome and the Bird Object that Uses that Network to Play.
     nets = []
     birds = []
     ge = []
     for genome_id, genome in genomes:
-        genome.fitness = 0  # start with fitness level of 0
+        genome.fitness = 0  # Start with Fitness Level of 0
         net = neat.nn.FeedForwardNetwork.create(genome, config)
         nets.append(net)
         birds.append(Bird(230,350))
@@ -337,17 +314,17 @@ def eval_genomes(genomes, config):
 
         pipe_ind = 0
         if len(birds) > 0:
-            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():  # determine whether to use the first or second
-                pipe_ind = 1                                                                # pipe on the screen for neural network input
+            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():  # Determine Whether to Use the First or Second
+                pipe_ind = 1                                                                # Pipe on the Screen for Neural Network Input
 
-        for x, bird in enumerate(birds):  # give each bird a fitness of 0.1 for each frame it stays alive
+        for x, bird in enumerate(birds):  # Give Each Bird a Fitness of 0.1 For Each Frame It Stays Alive
             ge[x].fitness += 0.1
             bird.move()
 
-            # send bird location, top pipe location and bottom pipe location and determine from network whether to jump or not
+            # Send the Bird Location, Top Pipe Location and Bottom Pipe Location and Determine From Network Whether to Jump or Not
             output = nets[birds.index(bird)].activate((bird.y, abs(bird.y - pipes[pipe_ind].height), abs(bird.y - pipes[pipe_ind].bottom)))
 
-            if output[0] > 0.5:  # we use a tanh activation function so result will be between -1 and 1. if over 0.5 jump
+            if output[0] > 0.5:  # We Use a Tanh Activation Function So Result Will be Between -1 and 1. If Over 0.5 Jump
                 bird.jump()
 
         base.move()
@@ -356,7 +333,7 @@ def eval_genomes(genomes, config):
         add_pipe = False
         for pipe in pipes:
             pipe.move()
-            # check for collision
+            # Check For Collision
             for bird in birds:
                 if pipe.collide(bird, win):
                     ge[birds.index(bird)].fitness -= 1
@@ -373,7 +350,7 @@ def eval_genomes(genomes, config):
 
         if add_pipe:
             score += 1
-            # can add this line to give more reward for passing through a pipe (not required)
+            # Can Add This Line to Give More Reward for Passing Through a Pipe [not required]
             for genome in ge:
                 genome.fitness += 5
             pipes.append(Pipe(WIN_WIDTH))
@@ -389,42 +366,39 @@ def eval_genomes(genomes, config):
 
         draw_window(WIN, birds, pipes, base, score, gen, pipe_ind)
 
-        # break if score gets large enough
-        '''if score > 20:
-            pickle.dump(nets[0],open("best.pickle", "wb"))
-            break'''
+        # Break If Score Gets to 20
+        # if score > 20:
+        #   pickle.dump(nets[0],open("best.pickle", "wb"))
+        #   break'''
 
 
 def run(config_file):
-    """
-    runs the NEAT algorithm to train a neural network to play flappy bird.
-    :param config_file: location of config file
-    :return: None
-    """
+    # Runs the NEAT Algorithm to Train a Neural Network to Play Flappy Bird.
+    # param config_file: config-path
+    # return: None
+    
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_file)
 
-    # Create the population, which is the top-level object for a NEAT run.
+    # Create the Population, Which Is the Top-Level Object For a NEAT Run.
     p = neat.Population(config)
 
-    # Add a stdout reporter to show progress in the terminal.
+    # Add a StdOut Reporter to Show Progress in the Terminal.
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    #p.add_reporter(neat.Checkpointer(5))
+    # p.add_reporter(neat.Checkpointer(5))
 
-    # Run for up to 50 generations.
+    # Run For Up to 50 Generations.
     winner = p.run(eval_genomes, 50)
 
-    # show final stats
+    # Show Final Stats
     print('\nBest genome:\n{!s}'.format(winner))
 
 
 if __name__ == '__main__':
-    # Determine path to configuration file. This path manipulation is
-    # here so that the script will run successfully regardless of the
-    # current working directory.
+    # Determine Path to Configuration File. This Path Manipulation Is Here So That the Script will Run Successfully Regardless of the Current Working Directory.
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'config-feedforward.txt')
     run(config_path)
